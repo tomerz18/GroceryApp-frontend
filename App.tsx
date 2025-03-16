@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, View, TextInput, Button, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, TextInput, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 
 const App = () => {
   const [grocery, setItem] = useState('');
@@ -28,10 +28,8 @@ const App = () => {
       />
 
       <TouchableOpacity style={styles.button} onPress={addItemToList}>
-        <Text style={styles.buttonText}>Add Item</Text>
+        <Text style={styles.buttonText}>הוספה</Text>
       </TouchableOpacity>
-
-      <Button title="הוספה" onPress={addItemToList} />
 
       <FlatList
         data={groceryList}
