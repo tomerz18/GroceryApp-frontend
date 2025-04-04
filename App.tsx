@@ -26,7 +26,7 @@ const App = () => {
     }
   };
 
-  const AddItem = async (item: GroceryItem) => {
+  const addItem = async (item: GroceryItem) => {
     try {
       const response = await axios.post(`${API_URL}/items`, item);
       console.log('Add item response:');
@@ -35,6 +35,20 @@ const App = () => {
       return response.status;
     } catch (error) {
       console.error('Failed to add grocery item:', error);
+      Alert.alert('Error', 'Failed to add grocery item');
+      throw error;
+    }
+  };
+
+  const removeItem = async (item: GroceryItem) => {
+    try {
+      const response = await axios.delete(`${API_URL}/items/${item.name}`);
+      console.log('Delete item response:');
+      console.log(response);
+
+      return response.status;
+    } catch (error) {
+      console.error('Failed to delete grocery item:', error);
       Alert.alert('Error', 'Failed to add grocery item');
       throw error;
     }
@@ -59,7 +73,7 @@ const App = () => {
   const addItemToList = async () => {
     if (grocery) {
       let groceryItem: GroceryItem = { name: grocery };
-      let status = await AddItem(groceryItem);
+      let status = await addItem(groceryItem);
 
       if (status !== 201) {
         Alert.alert('Error', 'Failed to add grocery item');
@@ -71,8 +85,13 @@ const App = () => {
     }
   };
 
-  const removeItemFromList = (index: number) => {
-    setGroceryList(groceryList.filter((_, i) => i !== index));
+  const removeItemFromList = async (item: GroceryItem) => {
+    let status = await removeItem(item);
+    if (status !== 200) {
+      Alert.alert('Error', 'Failed to add grocery item');
+    } else {
+      fetchGroceryItems();
+    }
   };
 
   return (
@@ -92,11 +111,10 @@ const App = () => {
 
       <FlatList
         data={groceryList}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item, index }) => (
+        renderItem={({ item }) => (
           <View style={styles.listItem}>
             <Text style={styles.listText}>{item.name}</Text>
-            <TouchableOpacity onPress={() => removeItemFromList(index)}>
+            <TouchableOpacity onPress={() => removeItemFromList(item)}>
               <Text style={styles.removeText}>הסר</Text>
             </TouchableOpacity>
           </View>
