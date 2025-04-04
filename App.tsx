@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, TextInput, FlatList, TouchableOpacity, Alert } from 'react-native';
+import { Text, View, TextInput, FlatList, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import styles from './src/styles';
 import axios from 'axios';
 
@@ -12,6 +12,7 @@ interface GroceryItem {
 const App = () => {
   const [grocery, setItem] = useState('');
   const [groceryList, setGroceryList] = useState<GroceryItem[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
 
   const getGroceryItems = async (): Promise<GroceryItem[]> => {
@@ -62,11 +63,15 @@ const App = () => {
 
   const fetchGroceryItems = async () => {
     try {
+      setIsLoading(true);
+
       const items = await getGroceryItems();
       setGroceryList(items);
     } catch (error) {
       Alert.alert('Error', 'Failed to load grocery items');
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -109,17 +114,24 @@ const App = () => {
         <Text style={styles.buttonText}>הוספה</Text>
       </TouchableOpacity>
 
-      <FlatList
-        data={groceryList}
-        renderItem={({ item }) => (
-          <View style={styles.listItem}>
-            <Text style={styles.listText}>{item.name}</Text>
-            <TouchableOpacity onPress={() => removeItemFromList(item)}>
-              <Text style={styles.removeText}>הסר</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-      />
+      {isLoading ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#0000ff" />
+          <Text style={styles.loadingText}>טוען רשימה...</Text>
+        </View>
+      ) : (
+          <FlatList
+            data={groceryList}
+            renderItem={({ item }) => (
+              <View style={styles.listItem}>
+                <Text style={styles.listText}>{item.name}</Text>
+                <TouchableOpacity onPress={() => removeItemFromList(item)}>
+                  <Text style={styles.removeText}>הסר</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          />
+      )}
     </View>
   );
 };
