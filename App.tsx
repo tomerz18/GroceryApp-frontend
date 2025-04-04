@@ -17,7 +17,8 @@ const App = () => {
   const getGroceryItems = async (): Promise<GroceryItem[]> => {
     try {
       const response = await axios.get(`${API_URL}/items`);
-      console.log(response)
+      console.log('Get items response:');
+      console.log(response);
       return response.data;
     } catch (error) {
       console.error('Failed to fetch grocery items:', error);
@@ -25,9 +26,24 @@ const App = () => {
     }
   };
 
+  const AddItem = async (item: GroceryItem) => {
+    try {
+      const response = await axios.post(`${API_URL}/items`, item);
+      console.log('Add item response:');
+      console.log(response);
+
+      return response.status;
+    } catch (error) {
+      console.error('Failed to add grocery item:', error);
+      Alert.alert('Error', 'Failed to add grocery item');
+      throw error;
+    }
+  };
+
     // Fetch grocery items when the app loads
     useEffect(() => {
       fetchGroceryItems();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
   const fetchGroceryItems = async () => {
@@ -40,10 +56,18 @@ const App = () => {
     }
   };
 
-  const addItemToList = () => {
+  const addItemToList = async () => {
     if (grocery) {
-      setGroceryList([...groceryList, { name: grocery }]);
-      setItem(''); // Clear input field after adding
+      let groceryItem: GroceryItem = { name: grocery };
+      let status = await AddItem(groceryItem);
+
+      if (status !== 201) {
+        Alert.alert('Error', 'Failed to add grocery item');
+      } else {
+        fetchGroceryItems();
+      }
+      setItem('');
+
     }
   };
 
