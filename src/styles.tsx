@@ -61,6 +61,14 @@ const styles = StyleSheet.create({
       fontSize: 16,
       color: '#666',
     },
+    versionContainer: {
+      padding: 10,
+      alignItems: 'center',
+    },
+    versionText: {
+      fontSize: 12,
+      color: '#888',
+    },
   });
 
 export default styles;

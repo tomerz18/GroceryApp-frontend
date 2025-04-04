@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, TextInput, FlatList, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import styles from './src/styles';
 import axios from 'axios';
+import DeviceInfo from 'react-native-device-info';
 
 const API_URL = 'https://mznq30wkg3.execute-api.us-east-1.amazonaws.com';
 
@@ -132,6 +133,11 @@ const App = () => {
             )}
           />
       )}
+      <View style={styles.versionContainer}>
+        <Text style={styles.versionText}>
+          Version {DeviceInfo.getVersion()}
+        </Text>
+      </View>
     </View>
   );
 };
