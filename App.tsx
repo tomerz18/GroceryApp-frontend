@@ -51,7 +51,7 @@ const App = () => {
       return response.status;
     } catch (error) {
       console.error('Failed to delete grocery item:', error);
-      Alert.alert('Error', 'Failed to add grocery item');
+      Alert.alert('Error', 'Failed to delete grocery item');
       throw error;
     }
   };
@@ -78,7 +78,7 @@ const App = () => {
 
   const addItemToList = async () => {
     if (grocery) {
-      let groceryItem: GroceryItem = { name: grocery };
+      let groceryItem: GroceryItem = { name: grocery.trim() };
       let status = await addItem(groceryItem);
 
       if (status !== 201) {
