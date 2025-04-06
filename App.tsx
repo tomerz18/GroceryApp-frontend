@@ -3,6 +3,7 @@ import { Text, View, TextInput, FlatList, TouchableOpacity, Alert, ActivityIndic
 import styles from './src/styles';
 import axios from 'axios';
 import DeviceInfo from 'react-native-device-info';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const API_URL = 'https://mznq30wkg3.execute-api.us-east-1.amazonaws.com';
 
@@ -102,6 +103,13 @@ const App = () => {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity 
+        style={styles.refreshButton}
+        onPress={fetchGroceryItems}
+        disabled={isLoading}
+      >
+        <Text style={styles.refreshButtonText}>↻</Text>
+      </TouchableOpacity>
       <Text style={styles.title}>רשימת קניות</Text>
 
       <TextInput

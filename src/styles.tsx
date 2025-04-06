@@ -69,6 +69,21 @@ const styles = StyleSheet.create({
       fontSize: 12,
       color: '#888',
     },
+    refreshButton: {
+      position: 'absolute',
+      top: 10,
+      left: 10,
+      zIndex: 10,
+      width: 40,
+      height: 40,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    refreshButtonText: {
+      fontSize: 30,
+      fontWeight: 'bold',
+      color: '#007A9F',
+    },
   });
 
 export default styles;
